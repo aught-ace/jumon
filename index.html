@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <meta charset="UTF-8">
+        <meta content="width=device-width">
+        <title>じゅもんのおもちゃ</title>
+	    <link href="./icon.png" rel="icon">
+        <link href="./apple-touch-icon.png" rel="apple-touch-icon">
+	    <style>
+/* 1/2より縦長 */
+@media (max-aspect-ratio: 1/2)
+{
+    #main
+    {
+        width: 100svw;
+        height: 200svw;
+        font-size: calc(100svw / 25);
+    }
+}
+/* 1/2より横長 */
+@media (min-aspect-ratio: 1/2)
+{
+    #main
+    {
+        width: 50svh;
+        height: 100svh;
+        font-size: calc(50svh / 25);
+    }
+}
+#main
+{
+    margin: auto;
+    padding-top: 0.5em;
+}
+
+/* じゅもんと型の欄 */
+#jumon-div
+{
+    border-color: #FFF;
+    border-style: solid;
+    border-width: 0.25em;
+    border-radius: 1em 1em 0 0;
+    width: 24.5em;
+    vertical-align: middle;
+    text-align: center;
+    line-height: 1em;
+    margin: auto;
+    overflow: hidden;
+}
+
+/* じゅもんの入力欄 */
+.jumon
+{
+    color: #FFF;
+    font-size: 6em;
+    border-style: none;
+    width: 1em;
+    line-height: 1em;
+    display: inline-block;
+    text-align: center;
+    width: 1em;
+    height: 1em;
+}
+.jumon:nth-of-type(1)
+{
+    border-radius: 0.5rem 0 0 0;
+}
+.jumon:nth-of-type(4)
+{
+    border-radius: 0 0.5rem 0 0;
+}
+
+/* 型チェックボックスのラベル */
+#jumon-t-div label
+{
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    display: inline-block;
+    color: transparent;
+}
+
+/* 値を別ける色 */
+.type.color-0 { background-color: #F00; }
+.type.color-1 { background-color: #08F; }
+.type.color-2 { background-color: #FF0; }
+.type.color-3 { background-color: #80F; }
+.type.color-4 { background-color: #0F0; }
+.type.color-5 { background-color: #F08; }
+.type.color-6 { background-color: #0FF; }
+.type.color-7 { background-color: #F80; }
+.type.color-8 { background-color: #00F; }
+.type.color-9 { background-color: #8F0; }
+.type.color-10 { background-color: #F0F; }
+.type.color-11 { background-color: #0F8; }
+.binary.color-0 { color: #F00; }
+.binary.color-1 { color: #08F; }
+.binary.color-2 { color: #FF0; }
+.binary.color-3 { color: #80F; }
+.binary.color-4 { color: #0F0; }
+.binary.color-5 { color: #F08; }
+.binary.color-6 { color: #0FF; }
+.binary.color-7 { color: #F80; }
+.binary.color-8 { color: #00F; }
+.binary.color-9 { color: #8F0; }
+.binary.color-10 { color: #F0F; }
+.binary.color-11 { color: #0F8; }
+
+/* 値チェックボックスのラベル */
+#jumon-b-div label
+{
+    width: 1em;
+    height: 1em;
+    line-height: 1em;
+    display: inline-block;
+    background-color: #000;
+    text-align: center;
+}
+
+/* 型と値を囲うもの */
+#jumon-t-div,
+#jumon-b-div
+{
+    text-align: center;
+    line-height: 1em;
+}
+
+/* ひらがな一覧 */
+#hiragana
+{
+    border-color: #FFF;
+    border-style: solid;
+    border-width: 0 0.25em 0.25em 0.25em;
+    width: 24.5em;
+    margin: auto;
+}
+
+/* ひらがなのブロック */
+#hiragana .left,
+#hiragana .middle
+{
+    width: calc(24em / 11 * 5);
+    display: inline-block;
+}
+#hiragana .right
+{
+    width: calc(24em / 11);
+    display: inline-block;
+    vertical-align: top;
+}
+
+/* ボタン */
+input[type="button"]
+{
+    width: calc(24em / 11);
+    height: 2em;
+    background-color: transparent;
+    color: #FFF;
+    border-style: none;
+    display: inline-block;
+}
+
+/* 選択されたじゅもん */
+.selected
+{
+    background-color: #FFF;
+    color: #000;
+}
+
+/* リスト */
+#input-list
+{
+    width: 24.5em;
+    border-color: #FFF;
+    border-style: solid;
+    border-width: 0 0.25em 0.25em 0.25em;
+    border-radius: 0 0 1em 1em;
+    list-style: none;
+    margin: auto;
+    padding-bottom: 0.25em;
+}
+#input-list li
+{
+    line-height: 1em;
+    width: 100%;
+    height: 1.125em;
+}
+#input-list li .bar
+{
+    width: calc(80% - 0.25em);
+    height: calc(100% - 0.25em);
+    margin: 0.25em 0 0 0.25em;
+    border-style: solid;
+    border-width: 0.125em;
+    border-radius: 1em;
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+}
+#input-list li .gauge
+{
+    height: 100%;
+    vertical-align: middle;
+}
+#input-list li .number
+{
+    width: 20%;
+    padding-right: 0.5em;
+    text-align: right;
+    font-size: 1em;
+    line-height: 1em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* リストの背景色 */
+li:nth-of-type(1){ color: #F00; }
+li:nth-of-type(2){ color: #08F; }
+li:nth-of-type(3){ color: #FF0; }
+li:nth-of-type(4){ color: #80F; }
+li:nth-of-type(5){ color: #0F0; }
+li:nth-of-type(6){ color: #F08; }
+li:nth-of-type(7){ color: #0FF; }
+li:nth-of-type(8){ color: #F80; }
+li:nth-of-type(9){ color: #00F; }
+li:nth-of-type(10) { color: #8F0; }
+li:nth-of-type(11) { color: #F0F; }
+li:nth-of-type(12) { color: #0F8; }
+li:nth-of-type(13) { color: #F00; }
+li:nth-of-type(14) { color: #08F; }
+li:nth-of-type(15) { color: #FF0; }
+li:nth-of-type(16) { color: #80F; }
+li:nth-of-type(17) { color: #0F0; }
+li:nth-of-type(18) { color: #F08; }
+li:nth-of-type(19) { color: #0FF; }
+li:nth-of-type(20) { color: #F80; }
+li:nth-of-type(21) { color: #00F; }
+li:nth-of-type(22) { color: #8F0; }
+li:nth-of-type(23) { color: #F0F; }
+li:nth-of-type(24) { color: #0F8; }
+li:nth-of-type(1) .gauge { background-color: #F00; }
+li:nth-of-type(2) .gauge { background-color: #08F; }
+li:nth-of-type(3) .gauge { background-color: #FF0; }
+li:nth-of-type(4) .gauge { background-color: #80F; }
+li:nth-of-type(5) .gauge { background-color: #0F0; }
+li:nth-of-type(6) .gauge { background-color: #F08; }
+li:nth-of-type(7) .gauge { background-color: #0FF; }
+li:nth-of-type(8) .gauge { background-color: #F80; }
+li:nth-of-type(9) .gauge { background-color: #00F; }
+li:nth-of-type(10) .gauge { background-color: #8F0; }
+li:nth-of-type(11) .gauge { background-color: #F0F; }
+li:nth-of-type(12) .gauge { background-color: #0F8; }
+li:nth-of-type(13) .gauge { background-color: #F00; }
+li:nth-of-type(14) .gauge { background-color: #08F; }
+li:nth-of-type(15) .gauge { background-color: #FF0; }
+li:nth-of-type(16) .gauge { background-color: #80F; }
+li:nth-of-type(17) .gauge { background-color: #0F0; }
+li:nth-of-type(18) .gauge { background-color: #F08; }
+li:nth-of-type(19) .gauge { background-color: #0FF; }
+li:nth-of-type(20) .gauge { background-color: #F80; }
+li:nth-of-type(21) .gauge { background-color: #00F; }
+li:nth-of-type(22) .gauge { background-color: #8F0; }
+li:nth-of-type(23) .gauge { background-color: #F0F; }
+li:nth-of-type(24) .gauge { background-color: #0F8; }
+li:nth-of-type(1) .bar { border-color: #F00; }
+li:nth-of-type(2) .bar { border-color: #08F; }
+li:nth-of-type(3) .bar { border-color: #FF0; }
+li:nth-of-type(4) .bar { border-color: #80F; }
+li:nth-of-type(5) .bar { border-color: #0F0; }
+li:nth-of-type(6) .bar { border-color: #F08; }
+li:nth-of-type(7) .bar { border-color: #0FF; }
+li:nth-of-type(8) .bar { border-color: #F80; }
+li:nth-of-type(9) .bar { border-color: #00F; }
+li:nth-of-type(10) .bar { border-color: #8F0; }
+li:nth-of-type(11) .bar { border-color: #F0F; }
+li:nth-of-type(12) .bar { border-color: #0F8; }
+li:nth-of-type(13) .bar { border-color: #F00; }
+li:nth-of-type(14) .bar { border-color: #08F; }
+li:nth-of-type(15) .bar { border-color: #FF0; }
+li:nth-of-type(16) .bar { border-color: #80F; }
+li:nth-of-type(17) .bar { border-color: #0F0; }
+li:nth-of-type(18) .bar { border-color: #F08; }
+li:nth-of-type(19) .bar { border-color: #0FF; }
+li:nth-of-type(20) .bar { border-color: #F80; }
+li:nth-of-type(21) .bar { border-color: #00F; }
+li:nth-of-type(22) .bar { border-color: #8F0; }
+li:nth-of-type(23) .bar { border-color: #F0F; }
+li:nth-of-type(24) .bar { border-color: #0F8; }
+
+/* 隠す */
+.none
+{
+    display: none;
+}
+
+/* 全体 */
+body
+{
+    background-color: #000;
+    color: #FFF;
+    font-size: 12pt;
+}
+
+/* すべてを囲うもの */
+body,
+html
+{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* 全ての要素 */
+*
+{
+    margin: 0;
+    padding: 0;
+    font-weight: normal;
+    font-family: sans-serif;
+    font-size: 1em;
+    line-height: 2em;
+    word-spacing: 0.125em;
+    box-sizing: border-box;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    outline: none;
+}
+        </style>
+    </head>
+    <body>
+        <div id="main">
+            <div id="jumon-div">
+                <div
+                    id="jumon-0" class="jumon selected">あ</div><div
+                    id="jumon-1" class="jumon">あ</div><div
+                    id="jumon-2" class="jumon">あ</div><div
+                    id="jumon-3" class="jumon">あ</div>
+                <div id="jumon-t-div">
+                    <input
+                        id="jumon-t-cb-0-0" class="none" type="checkbox"><label for="jumon-t-cb-0-0" class="color-0 type">0</label><input
+                        id="jumon-t-cb-0-1" class="none" type="checkbox"><label for="jumon-t-cb-0-1" class="color-0 type">0</label><input
+                        id="jumon-t-cb-0-2" class="none" type="checkbox"><label for="jumon-t-cb-0-2" class="color-0 type">0</label><input
+                        id="jumon-t-cb-0-3" class="none" type="checkbox"><label for="jumon-t-cb-0-3" class="color-0 type">0</label><input
+                        id="jumon-t-cb-0-4" class="none" type="checkbox"><label for="jumon-t-cb-0-4" class="color-0 type">0</label><input
+                        id="jumon-t-cb-0-5" class="none" type="checkbox"><label for="jumon-t-cb-0-5" class="color-0 type">0</label><input
+                        id="jumon-t-cb-1-0" class="none" checked type="checkbox"><label for="jumon-t-cb-1-0" class="color-1 type">1</label><input
+                        id="jumon-t-cb-1-1" class="none" checked type="checkbox"><label for="jumon-t-cb-1-1" class="color-1 type">1</label><input
+                        id="jumon-t-cb-1-2" class="none" checked type="checkbox"><label for="jumon-t-cb-1-2" class="color-1 type">1</label><input
+                        id="jumon-t-cb-1-3" class="none" checked type="checkbox"><label for="jumon-t-cb-1-3" class="color-1 type">1</label><input
+                        id="jumon-t-cb-1-4" class="none" checked type="checkbox"><label for="jumon-t-cb-1-4" class="color-1 type">1</label><input
+                        id="jumon-t-cb-1-5" class="none" checked type="checkbox"><label for="jumon-t-cb-1-5" class="color-1 type">1</label><input
+                        id="jumon-t-cb-2-0" class="none" type="checkbox"><label for="jumon-t-cb-2-0" class="color-2 type">0</label><input
+                        id="jumon-t-cb-2-1" class="none" type="checkbox"><label for="jumon-t-cb-2-1" class="color-2 type">0</label><input
+                        id="jumon-t-cb-2-2" class="none" type="checkbox"><label for="jumon-t-cb-2-2" class="color-2 type">0</label><input
+                        id="jumon-t-cb-2-3" class="none" type="checkbox"><label for="jumon-t-cb-2-3" class="color-2 type">0</label><input
+                        id="jumon-t-cb-2-4" class="none" type="checkbox"><label for="jumon-t-cb-2-4" class="color-2 type">0</label><input
+                        id="jumon-t-cb-2-5" class="none" type="checkbox"><label for="jumon-t-cb-2-5" class="color-2 type">0</label><input
+                        id="jumon-t-cb-3-0" class="none" checked type="checkbox"><label for="jumon-t-cb-3-0" class="color-3 type">1</label><input
+                        id="jumon-t-cb-3-1" class="none" checked type="checkbox"><label for="jumon-t-cb-3-1" class="color-3 type">1</label><input
+                        id="jumon-t-cb-3-2" class="none" checked type="checkbox"><label for="jumon-t-cb-3-2" class="color-3 type">1</label><input
+                        id="jumon-t-cb-3-3" class="none" checked type="checkbox"><label for="jumon-t-cb-3-3" class="color-3 type">1</label><input
+                        id="jumon-t-cb-3-4" class="none" checked type="checkbox"><label for="jumon-t-cb-3-4" class="color-3 type">1</label><input
+                        id="jumon-t-cb-3-5" class="none" checked type="checkbox"><label for="jumon-t-cb-3-5" class="color-3 type">1</label>
+                </div>
+                <div id="jumon-b-div">
+                    <input
+                        id="jumon-b-cb-0-0" class="none" type="checkbox"><label for="jumon-b-cb-0-0" class="color-0 binary">0</label><input
+                        id="jumon-b-cb-0-1" class="none" type="checkbox"><label for="jumon-b-cb-0-1" class="color-0 binary">0</label><input
+                        id="jumon-b-cb-0-2" class="none" type="checkbox"><label for="jumon-b-cb-0-2" class="color-0 binary">0</label><input
+                        id="jumon-b-cb-0-3" class="none" type="checkbox"><label for="jumon-b-cb-0-3" class="color-0 binary">0</label><input
+                        id="jumon-b-cb-0-4" class="none" type="checkbox"><label for="jumon-b-cb-0-4" class="color-0 binary">0</label><input
+                        id="jumon-b-cb-0-5" class="none" type="checkbox"><label for="jumon-b-cb-0-5" class="color-0 binary">0</label><input
+                        id="jumon-b-cb-1-0" class="none" type="checkbox"><label for="jumon-b-cb-1-0" class="color-1 binary">0</label><input
+                        id="jumon-b-cb-1-1" class="none" type="checkbox"><label for="jumon-b-cb-1-1" class="color-1 binary">0</label><input
+                        id="jumon-b-cb-1-2" class="none" type="checkbox"><label for="jumon-b-cb-1-2" class="color-1 binary">0</label><input
+                        id="jumon-b-cb-1-3" class="none" type="checkbox"><label for="jumon-b-cb-1-3" class="color-1 binary">0</label><input
+                        id="jumon-b-cb-1-4" class="none" type="checkbox"><label for="jumon-b-cb-1-4" class="color-1 binary">0</label><input
+                        id="jumon-b-cb-1-5" class="none" type="checkbox"><label for="jumon-b-cb-1-5" class="color-1 binary">0</label><input
+                        id="jumon-b-cb-2-0" class="none" type="checkbox"><label for="jumon-b-cb-2-0" class="color-2 binary">0</label><input
+                        id="jumon-b-cb-2-1" class="none" type="checkbox"><label for="jumon-b-cb-2-1" class="color-2 binary">0</label><input
+                        id="jumon-b-cb-2-2" class="none" type="checkbox"><label for="jumon-b-cb-2-2" class="color-2 binary">0</label><input
+                        id="jumon-b-cb-2-3" class="none" type="checkbox"><label for="jumon-b-cb-2-3" class="color-2 binary">0</label><input
+                        id="jumon-b-cb-2-4" class="none" type="checkbox"><label for="jumon-b-cb-2-4" class="color-2 binary">0</label><input
+                        id="jumon-b-cb-2-5" class="none" type="checkbox"><label for="jumon-b-cb-2-5" class="color-2 binary">0</label><input
+                        id="jumon-b-cb-3-0" class="none" type="checkbox"><label for="jumon-b-cb-3-0" class="color-3 binary">0</label><input
+                        id="jumon-b-cb-3-1" class="none" type="checkbox"><label for="jumon-b-cb-3-1" class="color-3 binary">0</label><input
+                        id="jumon-b-cb-3-2" class="none" type="checkbox"><label for="jumon-b-cb-3-2" class="color-3 binary">0</label><input
+                        id="jumon-b-cb-3-3" class="none" type="checkbox"><label for="jumon-b-cb-3-3" class="color-3 binary">0</label><input
+                        id="jumon-b-cb-3-4" class="none" type="checkbox"><label for="jumon-b-cb-3-4" class="color-3 binary">0</label><input
+                        id="jumon-b-cb-3-5" class="none" type="checkbox"><label for="jumon-b-cb-3-5" class="color-3 binary">0</label>
+                </div>
+            </div>
+            <div id="hiragana">
+                <div class="left">
+                    <input
+                        value="あ" type="button"><input
+                        value="い" type="button"><input
+                        value="う" type="button"><input
+                        value="え" type="button"><input
+                        value="お" type="button"><input
+                        value="か" type="button"><input
+                        value="き" type="button"><input
+                        value="く" type="button"><input
+                        value="け" type="button"><input
+                        value="こ" type="button"><input
+                        value="さ" type="button"><input
+                        value="し" type="button"><input
+                        value="す" type="button"><input
+                        value="せ" type="button"><input
+                        value="ぞ" type="button"><input
+                        value="た" type="button"><input
+                        value="ち" type="button"><input
+                        value="つ" type="button"><input
+                        value="て" type="button"><input
+                        value="と" type="button"><input
+                        value="な" type="button"><input
+                        value="に" type="button"><input
+                        value="ぬ" type="button"><input
+                        value="ね" type="button"><input
+                        value="の" type="button"><input
+                        value="は" type="button"><input
+                        value="ひ" type="button"><input
+                        value="ふ" type="button"><input
+                        value="へ" type="button"><input
+                        value="ほ" type="button">
+                </div><div class="middle">
+                    <input
+                        value="ま" type="button"><input
+                        value="み" type="button"><input
+                        value="む" type="button"><input
+                        value="め" type="button"><input
+                        value="も" type="button"><input
+                        value="ら" type="button"><input
+                        value="り" type="button"><input
+                        value="る" type="button"><input
+                        value="れ" type="button"><input
+                        value="ろ" type="button"><input
+                        value="が" type="button"><input
+                        value="ぎ" type="button"><input
+                        value="ぐ" type="button"><input
+                        value="げ" type="button"><input
+                        value="ご" type="button"><input
+                        value="ざ" type="button"><input
+                        value="じ" type="button"><input
+                        value="ず" type="button"><input
+                        value="ぜ" type="button"><input
+                        value="ぞ" type="button"><input
+                        value="ば" type="button"><input
+                        value="び" type="button"><input
+                        value="ぶ" type="button"><input
+                        value="べ" type="button"><input
+                        value="ぼ" type="button"><input
+                        value="ぱ" type="button"><input
+                        value="ぴ" type="button"><input
+                        value="ぷ" type="button"><input
+                        value="ぺ" type="button"><input
+                        value="ぽ" type="button">
+                </div><div class="right">
+                    <input
+                        value="や" type="button"><input
+                        value="ゆ" type="button"><input
+                        value="よ" type="button"><input
+                        value="わ" type="button">
+                </div>
+            </div>
+            <ul id="input-list">
+                <li
+                    id="list-0"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-1"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-2"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-3"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-4" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-5" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-6" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-7" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-8" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-9" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-10" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-11" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-12" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-13" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-14" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-15" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-16" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-17" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-18" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-19" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-20" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-21" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-22" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li><li
+                    id="list-23" class="none"><div class="bar"><div class="gauge" style="width:0;"></div></div><div class="number">0</div></li>
+            </ul>
+        </div>
+
+        <script defer>
+const input =
+{
+    // 型や2進の桁を塗る
+    draw:
+    {
+        target: '',
+        check: false,
+    },
+    bar: -1,
+    selectedJumon: 0,
+    hiragana: [],
+    typeCount:
+    [
+        6, 6, 6, 6, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+    ],
+    binary:
+    [
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0,
+    ],
+}
+
+const element =
+{
+    jumon: document.querySelectorAll('.jumon'),
+    jumonTypeDiv: document.querySelector('#jumon-t-div'),
+    jumonBinaryDiv: document.querySelector('#jumon-b-div'),
+    jumonLabel: document.querySelectorAll('#jumon-div label'),
+    jumonCheckbox: document.querySelectorAll('#jumon-div input[type="checkbox"]'),
+    hiragana: document.querySelectorAll('#hiragana input[type="button"]'),
+    list: document.querySelectorAll('#input-list li'),
+    bar: document.querySelectorAll('#input-list li .bar'),
+    gauge: document.querySelectorAll('#input-list li .gauge'),
+    number: document.querySelectorAll('#input-list li .number'),
+}
+
+const func =
+{
+    // じゅもんを更新
+    updateJumon: () =>
+    {
+        const bin = input.binary
+        for(let m = 0; m < 4; m++)
+        {
+            let v = 0
+            for(let b = 0; b < 6; b++)
+            {
+                const k = m * 6 + b
+                v += (bin[k]? 32 >> b : 0)
+            }
+            element.jumon[m].textContent = input.hiragana[v]
+        }
+    },
+    // 2進を更新
+    updateBinary: () =>
+    {
+        const bin = input.binary
+
+        for(let b = 0; b < 24; b++)
+        {
+            element.jumonCheckbox[b + 24].checked = bin[b] !== 0
+            element.jumonLabel[b + 24].textContent = bin[b]
+        }
+    },
+    // 入力リストを更新
+    updateList: () =>
+    {
+        const bin = input.binary
+
+        // タイプの色バーの配列を取得
+        const tl = []
+        for(let n = 0; n < 24; n++)
+        {
+            const t = element.jumonLabel[n].textContent === '1'
+            tl[n] = t? 1 : 0
+        }
+
+
+        let t = 0
+        for(let m = 0; m < 24; m++)
+        {
+            if(m !== 0 && tl[m] === tl[m - 1]) continue
+            const tc = input.typeCount[t]
+            let a = 0
+            let i = m
+            for(let b = tc - 1; b >= 0; b--)
+            {
+                a += (bin[i++]? 1 << b : 0)
+            }
+            const n = element.number[t]
+            const g = element.gauge[t]
+            n.textContent = a
+            const p = Math.floor(a) / (Math.pow(2, tc) - 1)
+            g.style.width = (p * 100) + '%'
+            t++
+            m += tc - 1
+        }
+    },
+}
+
+const callback =
+{
+    clickJumon: (e) =>
+    {
+        e.stopPropagation()
+        e.preventDefault()
+
+        const t = e.target
+        
+        for(let k = 0; k < 4; k++)
+        {
+            const v = element.jumon[k]
+            if(!v.textContent) continue
+            v.classList.remove('selected')
+            if(v === t)
+                input.selectedJumon = k
+        }
+        t.classList.add('selected')
+    },
+    jumonType: (e) =>
+    {
+        e.stopPropagation()
+        e.preventDefault()
+        
+        if(
+            e.type !== 'touchstart' &&
+            e.type !== 'touchmove' &&
+            !(e.buttons & 1)
+        ) return
+
+        const r = element.jumonTypeDiv.getBoundingClientRect()
+
+        // ポインター座標
+        let x = -1, y = -1
+        if(e.clientX != undefined) x = e.clientX
+        if(e.targetTouches != undefined) x = e.targetTouches[0].clientX
+        const lx =  Math.max(0, Math.min(Math.floor((x - r.left) / r.width * 24), 23))
+
+        const l = element.jumonLabel[lx]
+        const c = document.querySelector('#' + l.htmlFor)
+
+        if(
+            e.type === 'mousedown' ||
+            e.type === 'touchstart'
+        )
+        {
+            input.draw.check = l.textContent === '0'
+            input.draw.target = 'type'
+        }
+
+        if(!l.classList.contains(input.draw.target)) return
+
+        c.checked = input.draw.check
+        l.textContent = input.draw.check? '1' : '0'
+
+        // 型の色バーをリセット
+        for(let k = 0; k < 24; k++)
+        {
+            for(let i = 0; i < 12; i++)
+            {
+                element.jumonLabel[k].classList.remove('color-' + i)
+                element.jumonLabel[k + 24].classList.remove('color-' + i)
+            }
+            if(!element.list[k].classList.contains('none')) element.list[k].classList.add('none')
+        }
+        // 型の色バーを更新
+        input.typeCount =
+        [
+            0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0,
+        ]
+        let tn = 0
+        let tc = 0
+        for(let k = 0; k < 24; k++)
+        {
+            const v = element.jumonLabel[k]
+            const b = element.jumonLabel[k + 24]
+            const g = element.gauge[tn]
+
+            let pv = null
+            if(k !== 0) pv = element.jumonLabel[k - 1]
+
+            if(k === 0)
+            {
+                element.list[tn].classList.remove('none')
+            }
+
+            if(pv != null && pv.textContent !== v.textContent)
+            {
+                input.typeCount[tn] = tc
+                tc = 0
+                tn = tn + 1
+                element.list[tn].classList.remove('none')
+            }
+
+            tc++
+
+            v.classList.add('color-' + tn % 12)
+            b.classList.add('color-' + tn % 12)
+        }
+        input.typeCount[tn] = tc
+
+        func.updateJumon()
+        func.updateList()
+    },
+    jumonBinary: (e) =>
+    {
+        e.stopPropagation()
+        e.preventDefault()
+        
+        if(
+            e.type !== 'touchstart' &&
+            e.type !== 'touchmove' &&
+            !(e.buttons & 1)
+        ) return
+
+        const r = element.jumonTypeDiv.getBoundingClientRect()
+
+        // ポインター座標
+        let x = -1, y = -1
+        if(e.clientX != undefined) x = e.clientX
+        if(e.targetTouches != undefined) x = e.targetTouches[0].clientX
+        const lx =  Math.max(0, Math.min(Math.floor((x - r.left) / r.width * 24), 23))
+
+        const l = element.jumonLabel[lx + 24]
+        const c = document.querySelector('#' + l.htmlFor)
+
+        if(
+            e.type === 'mousedown' ||
+            e.type === 'touchstart'
+        )
+        {
+            input.draw.check = l.textContent === '0'
+            input.draw.target = 'binary'
+        }
+
+        if(!l.classList.contains(input.draw.target)) return
+
+        c.checked = input.draw.check
+        l.textContent = input.draw.check? '1' : '0'
+
+        const bl = []
+        for(let n = 0; n < 24; n++)
+        {
+            const b = element.jumonLabel[n + 24].textContent === '1'
+            bl[n] = b? 1 : 0
+        }
+        input.binary = bl
+
+        func.updateJumon()
+        func.updateList()
+    },
+    clickHiragana: (e) =>
+    {
+        e.stopPropagation()
+        e.preventDefault()
+
+        const t = e.target
+        const v = t.value
+
+        // ひらがなの番号を調べる
+        let i = -1
+        for(i = 0; i < input.hiragana.length; i++)
+        {
+            const h = input.hiragana[i]
+            if(v !== h) continue
+            break
+        }
+        // 2進に直す
+        const s = input.selectedJumon
+        for(let n = 0; n < 6; n++)
+        {
+            input.binary[s * 6 + n] = (i >> (5 - n)) & 1
+        }
+
+        func.updateBinary()
+        func.updateList()
+
+        const j = element.jumon[s]
+        input.selectedJumon = (input.selectedJumon + 1) % 4
+        const k = element.jumon[input.selectedJumon]
+
+        j.textContent = v
+
+        j.classList.remove('selected')
+        k.classList.add('selected')
+    },
+    downBar: (e) =>
+    {
+        e.stopPropagation()
+        e.preventDefault()
+
+        if(
+            e.type !== 'touchstart' &&
+            e.type !== 'touchmove' &&
+            !(e.buttons & 1)
+        ) return
+    
+        const t = e.target
+        let tn = -1
+        for(let i = 0; i < 24; i++)
+        {
+            if(element.bar[i] !== t && element.gauge[i] !== t) continue
+            tn = i
+            break
+        }
+        if(tn === -1) return
+
+        // 押し始め
+        if(
+            e.type === 'mousedown' ||
+            e.type === 'touchstart'
+        ) input.bar = tn
+
+        if(tn !== input.bar) return
+
+        const b = element.bar[tn]
+        const g = element.gauge[tn]
+        const n = element.number[tn]
+        const r = b.getBoundingClientRect()
+
+        // ポインター座標
+        let x = -1, y = -1
+        if(e.clientX != undefined) x = e.clientX
+        if(e.targetTouches != undefined) x = e.targetTouches[0].clientX
+
+        // 端の幅
+        const h = r.width / 32
+
+        // ノーマライズされたポインター座標
+        const nx =  (x - r.left - h) / (r.width - h * 2)
+
+        // 値を丸める
+        const p = Math.pow(2, input.typeCount[tn])
+        const rx = Math.min(Math.max(0, Math.floor(nx * p)), p - 1)
+        const sx = rx / (p - 1)
+        n.textContent = rx
+        g.style.width = (sx * 100) +'%'
+
+        // 2進に直す
+        let i = 0
+        for(let k = 0; k < element.number.length; k++)
+        {
+            const v = parseInt(element.number[k].textContent)
+            const tc = input.typeCount[k]
+
+            for(let c = tc - 1; c >= 0; c--)
+            {
+                input.binary[i] = v >> c & 1
+                i++
+            }
+        }
+
+        func.updateJumon()
+        func.updateBinary()
+    },
+    preventDefault: (e) =>
+    {
+        e.stopPropagation()
+        e.preventDefault()
+    },
+    returnFalse: (e) =>
+    {
+        e.stopPropagation()
+        return false
+    },
+}
+
+// イベント登録
+for(let v of element.jumon)
+{
+    v.addEventListener('click', callback.clickJumon)
+}
+element.jumonTypeDiv.addEventListener('mousedown', callback.jumonType)
+element.jumonTypeDiv.addEventListener('touchstart', callback.jumonType)
+element.jumonTypeDiv.addEventListener('mousemove', callback.jumonType)
+element.jumonTypeDiv.addEventListener('touchmove', callback.jumonType)
+element.jumonBinaryDiv.addEventListener('mousedown', callback.jumonBinary)
+element.jumonBinaryDiv.addEventListener('touchstart', callback.jumonBinary)
+element.jumonBinaryDiv.addEventListener('mousemove', callback.jumonBinary)
+element.jumonBinaryDiv.addEventListener('touchmove', callback.jumonBinary)
+for(let k in element.hiragana)
+{
+    const v = element.hiragana[k]
+    if(v.type !== 'button') continue
+    input.hiragana[k] = v.value
+    v.addEventListener('click', callback.clickHiragana)
+}
+for(let v of element.bar)
+{
+    v.addEventListener('mousedown', callback.downBar)
+    v.addEventListener('touchstart', callback.downBar)
+    v.addEventListener('mousemove', callback.downBar)
+    v.addEventListener('touchmove', callback.downBar)
+}
+
+
+// 選択禁止
+document.addEventListener('selectstart', callback.returnFalse, { passive: false })
+// ダブルタップ禁止
+document.addEventListener('dblclick', callback.preventDefault, { passive: false })
+// メニュー禁止
+document.addEventListener('contextmenu', callback.returnFalse, { passive: false })
+
+        </script>
+    </body>
+</html>
