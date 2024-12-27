@@ -51,15 +51,25 @@
 .jumon
 {
     color: #FFF;
-    font-size: 6em;
-    border-style: none;
-    width: 1em;
+    border: solid 0.0625em #000;
+    border-radius: 0.125em;
+    font-size: 5em;
+    width: calc(6em / 5);
+    height: calc(6em / 5);
     line-height: 1em;
-    display: inline-block;
+    padding: 0.0625em;
     text-align: center;
-    width: 1em;
-    height: 1em;
+    vertical-align: middle;
+    display: inline-block;
 }
+
+/* 選択されたじゅもん */
+.selected
+{
+    background-color: #FFF;
+    color: #000;
+}
+
 
 /* 型チェックボックスのラベル */
 #jumon-t-div label
@@ -154,14 +164,6 @@ input[type="button"]
     display: inline-block;
 }
 
-/* 選択されたじゅもん */
-.selected
-{
-    border-radius: 0.25rem;
-    background-color: #FFF;
-    color: #000;
-}
-
 /* リスト */
 #input-list
 {
@@ -194,6 +196,8 @@ input[type="button"]
 }
 #input-list li .gauge
 {
+    border: solid 0.125em #000;
+    border-radius: 0.125em;
     height: 100%;
 }
 #input-list li .number
