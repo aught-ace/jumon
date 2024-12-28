@@ -376,7 +376,7 @@ html
     line-height: 2em;
     word-spacing: 0.125em;
     box-sizing: border-box;
-    touch-action: manipulation;
+    touch-action: pinch-zoom;
     -webkit-user-select: none;
     user-select: none;
     outline: none;
@@ -920,22 +920,31 @@ const callback =
         func.updateJumon()
         func.updateBinary()
     },
-    preventDefault: (e) =>
+    cancel: (e) =>
     {
-        e.stopPropagation()
         e.preventDefault()
-    },
-    returnFalse: (e) =>
-    {
         e.stopPropagation()
         return false
     },
 }
 
+// ボタン外タップ禁止
+document.addEventListener('mousedown', callback.cancel, { passive: false })
+document.addEventListener('touchstart', callback.cancel, { passive: false })
+document.addEventListener('mousemove', callback.cancel, { passive: false })
+document.addEventListener('touchmove', callback.cancel, { passive: false })
+// 選択禁止
+document.addEventListener('selectstart', callback.cancel, { passive: false })
+// ダブルタップ禁止
+document.addEventListener('dblclick', callback.cancel, { passive: false })
+// メニュー禁止
+document.addEventListener('contextmenu', callback.cancel, { passive: false })
+
 // イベント登録
 for(let v of element.jumon)
 {
-    v.addEventListener('click', callback.clickJumon)
+    v.addEventListener('mousedown', callback.clickJumon)
+    v.addEventListener('touchstart', callback.clickJumon)
 }
 element.jumonTypeDiv.addEventListener('mousedown', callback.jumonType)
 element.jumonTypeDiv.addEventListener('touchstart', callback.jumonType)
@@ -950,7 +959,8 @@ for(let k in element.hiragana)
     const v = element.hiragana[k]
     if(v.type !== 'button') continue
     input.hiragana[k] = v.value
-    v.addEventListener('click', callback.clickHiragana)
+    v.addEventListener('mousedown', callback.clickHiragana)
+    v.addEventListener('touchstart', callback.clickHiragana)
 }
 for(let v of element.bar)
 {
@@ -959,14 +969,6 @@ for(let v of element.bar)
     v.addEventListener('mousemove', callback.downBar)
     v.addEventListener('touchmove', callback.downBar)
 }
-
-
-// 選択禁止
-document.addEventListener('selectstart', callback.returnFalse, { passive: false })
-// ダブルタップ禁止
-document.addEventListener('dblclick', callback.preventDefault, { passive: false })
-// メニュー禁止
-document.addEventListener('contextmenu', callback.returnFalse, { passive: false })
 
         </script>
     </body>
