@@ -44,6 +44,7 @@
     vertical-align: middle;
     text-align: center;
     line-height: 1em;
+    padding: 0.25em;
     margin: auto;
 }
 
@@ -51,13 +52,12 @@
 .jumon
 {
     color: #FFF;
-    border: solid 0.25rem #000;
-    border-radius: 1rem;
     font-size: 5em;
-    width: calc(6em / 5);
-    height: calc(6em / 5);
+    padding: 0.125em 0 0 0;
+    border-radius: 0.125em;
+    width: calc(6em / 5 * 23.5 / 24);
+    height: calc(6em / 5 * 23.5 / 24);
     line-height: 1em;
-    padding: 0.0625em;
     text-align: center;
     vertical-align: middle;
     display: inline-block;
@@ -75,15 +75,17 @@
 {
     border-style: solid;
     border-color: #000;
-    border-radius: 0.125em;
-    border-width: 0.03125em;
-    width: 1em;
+    border-radius: 0.25em;
+    border-width: 0.0625em;
+    width: calc(1em * 23.5 / 24);
     height: 2em;
     line-height: 2em;
     display: inline-block;
     color: transparent;
 }
 
+
+/*
 #jumon-t-div .first
 {
     border-top-left-radius: 0.5em;
@@ -94,8 +96,6 @@
     border-top-right-radius: 0.5em;
     border-bottom-right-radius: 0.5em;
 }
-
-/*
 #jumon-t-div label:nth-of-type(1)
 {
     margin-left: 0.25em;
@@ -160,7 +160,7 @@
 /* 値チェックボックスのラベル */
 #jumon-b-div label
 {
-    width: 1em;
+    width: calc(1em * 23.5 / 24);
     height: 2em;
     line-height: 2em;
     display: inline-block;
@@ -173,6 +173,10 @@
 {
     text-align: center;
     line-height: 2em;
+}
+#jumon-t-div
+{
+    padding-top: 0.25em;
 }
 
 /* ひらがな一覧 */
@@ -221,11 +225,11 @@ input[type="button"]
     border-radius: 0 0 1em 1em;
     list-style: none;
     margin: auto;
-    padding: 0.5em 0.5em;
+    padding: 0.125em 0.25em 0.25em 0.25em;
 }
 #input-list li
 {
-    line-height: 1em;
+    line-height: calc(25.25em / 24);
     width: 100%;
     height: calc(25.25em / 24);
 }
@@ -242,7 +246,7 @@ input[type="button"]
 }
 #input-list li .gauge
 {
-    border: solid 0.125em #000;
+    border: solid 0.0625em #000;
     height: 100%;
 }
 #input-list li .number
