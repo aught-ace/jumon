@@ -186,28 +186,36 @@
     border-style: solid;
     border-width: 0 0.25em 0.25em 0.25em;
     width: 24.5em;
+    padding: 0.25em;
     margin: auto;
 }
 
 /* ひらがなのブロック */
 #hiragana .left,
+#hiragana .middle,
+#hiragana .right
+{
+    display: inline-block;
+}
+#hiragana .left
+{
+    width: calc(23.5em * 5 / 12);
+}
 #hiragana .middle
 {
-    width: 10em;
-    display: inline-block;
+    width: calc(23.5em * 5 / 12);
 }
 #hiragana .right
 {
-    width: 4em;
-    display: inline-block;
+    width: calc(23.5em * 2 / 12);
     vertical-align: top;
 }
 
 /* ボタン */
 input[type="button"]
 {
-    width: 2em;
-    height: 2em;
+    width: calc(23.5em / 12);
+    height: calc(23.5em / 12);
     background-color: transparent;
     color: #FFF;
     border-style: none;
@@ -229,9 +237,9 @@ input[type="button"]
 }
 #input-list li
 {
-    line-height: calc(25.25em / 24);
+    line-height: calc(25em / 24);
     width: 100%;
-    height: calc(25.25em / 24);
+    height: calc(25em / 24);
 }
 #input-list li .bar
 {
